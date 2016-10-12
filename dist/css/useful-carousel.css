@@ -3,7 +3,8 @@
 */
 .hero-slideshow {
   position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  margin: 0 0 1rem 0; }
   .hero-slideshow *, .hero-slideshow *:before, .hero-slideshow *:after {
     box-sizing: border-box; }
   .hero-slideshow figure {
@@ -61,7 +62,7 @@
     Carousel
 */
 .products-conveyor {
-  margin: 0 -1rem;
+  margin: 0 -1rem 1rem -1rem;
   padding: 0;
   position: relative;
   overflow: hidden; }
