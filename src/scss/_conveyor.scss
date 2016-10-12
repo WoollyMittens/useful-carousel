@@ -1,0 +1,132 @@
+/*
+    Carousel
+*/
+.products-conveyor {
+    margin: 0 -1rem;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+    figure {
+        position: absolute;
+        left: -33%;
+        width: 33%;
+        transition-property: left, opacity;
+        transition-duration: 600ms;
+        transition-timing-function: ease;
+        opacity: 0;
+        margin: 0;
+        padding: 0 1rem;
+        img {
+            width: 100%;
+            height: auto;
+            vertical-align: top;
+        }
+        figcaption {
+            position: absolute;
+            left: 1rem;
+            bottom: 0;
+            right: 1rem;
+            padding: 1rem;
+            background-color: rgba(0,0,0,0.5);
+            color: #fff;
+            text-align: center;
+        }
+        &.carousel-0 {
+            left: 100%;
+            opacity: 0;
+        }
+        &.carousel-1 {
+            left: 66.667%;
+            opacity: 1;
+        }
+        &.carousel-2 {
+            left: 33.333%;
+            opacity: 1;
+        }
+        &.carousel-3 {
+            left: 0;
+            opacity: 1;
+        }
+        &.carousel-4 {
+            left: -33.333%;
+            opacity: 0;
+        }
+    }
+    .carousel-next,
+    .carousel-prev {
+        background-color: rgba(0,0,0,0.5);
+        background-size: 80% auto;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        width: 3rem;
+        height: 3rem;
+        z-index: 2;
+        top: 50%;
+        overflow: hidden;
+        text-indent: 4rem;
+    }
+    .carousel-prev {
+        background-image: url("../img/symbol_backward.svg");
+        left: 0;
+        transform: translate(0, -50%);
+    }
+    .carousel-next {
+        background-image: url("../img/symbol_forward.svg");
+        right: 0;
+        transform: translate(0, -50%);
+    }
+    .carousel-indicators {
+        display: none;
+    }
+}
+@media only screen and (max-width: 979px) {
+    .products-conveyor {
+        figure {
+            left: -50%;
+            width: 50%;
+            &.carousel-0 {
+                left: 100%;
+                opacity: 0;
+            }
+            &.carousel-1 {
+                left: 50%;
+                opacity: 1;
+            }
+            &.carousel-2 {
+                left: 0;
+                opacity: 1;
+            }
+            &.carousel-3,
+            &.carousel-4 {
+                left: -50%;
+                opacity: 0;
+            }
+        }
+    }
+}
+@media only screen and (max-width: 479px) {
+    .products-conveyor {
+        figure {
+            left: -100%;
+            width: 100%;
+            &.carousel-0 {
+                left: 100%;
+                opacity: 0;
+            }
+            &.carousel-1 {
+                left: 0;
+                opacity: 1;
+            }
+            &.carousel-2,
+            &.carousel-3,
+            &.carousel-4 {
+                left: -100%;
+                opacity: 0;
+            }
+        }
+    }
+}

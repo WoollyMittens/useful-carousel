@@ -1,0 +1,118 @@
+/*
+    Hero
+*/
+#wq {
+    .wq-hero {
+        position: relative;
+        overflow: hidden;
+        figure {
+            position: absolute;
+            opacity: 0;
+            transition: opacity ease 1000ms;
+            z-index: 0;
+            height: 68rem;
+            background-position: 50% 0%;
+            background-size: cover;
+            width: 100%;
+            img {
+                width: 100%;
+                height: auto;
+            }
+            figcaption {
+                position: absolute;
+                width: 100%;
+                max-width: 126rem;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                padding: 0 3rem 15rem;
+                h2 {
+                    font-size: 6rem;
+                    font-weight: 200;
+                    color: #fff;
+                    margin: 0 0 3rem;
+                    text-transform: none;
+                    width: 50%;
+                }
+                p {
+                    font-size: 2.4rem;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0 0 1rem;
+                    width: 50%;
+                }
+            }
+            &.carousel-0 {}
+            &.carousel-1 {
+                opacity: 1;
+                z-index: 1;
+            }
+            &.carousel-2 {}
+        }
+        .carousel-next,
+        .carousel-prev {
+            display: none;
+        }
+        .carousel-pager {
+            position: absolute;
+            bottom: 18rem;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 2;
+            a {
+                display: inline-block;
+                width: 0.7rem;
+                height: 0.7rem;
+                border-radius: 50%;
+                overflow: hidden;
+                text-indent: 1rem;
+                border: solid 1px #f1f1f1;
+                margin: 0 0.5rem;
+                &.carousel-passive {}
+                &.carousel-active {
+                    background-color: #f1f1f1;
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 979px) {
+    #wq .wq-hero .carousel-pager {
+        bottom: 1rem;
+    }
+    #wq .wq-hero figure img {
+        opacity: 0.5;
+    }
+    #wq .wq-hero figure figcaption {
+        padding: 0 3rem 3rem;
+        text-shadow: 0 0 3px rgba(0,0,0,0.8);
+    }
+    #wq .wq-hero figure figcaption h2 {
+        width: auto;
+    }
+    #wq .wq-hero figure figcaption p {
+        width: auto;
+    }
+}
+@media only screen and (max-width: 479px) {
+    #wq .wq-hero figure {
+        height: 30rem;
+        width: 100%;
+    }
+    #wq .wq-hero figure img {
+        width: auto;
+        height: 100%;
+        transform: translateX(-50%);
+        position: relative;
+        left: 50%;
+    }
+    #wq .wq-hero figure figcaption h2 {
+        font-size: 3.6rem;
+        margin: 0 0 1.5rem;
+    }
+    #wq .wq-hero figure figcaption p {
+        font-size: 1.8rem;
+        margin: 0 0 1rem;
+    }
+}
+@media only screen and (min-width: 980px) {}

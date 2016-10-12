@@ -1,0 +1,144 @@
+/*
+    Carousel
+*/
+#wq {
+    .wq-products,
+    .box-up-sell {
+        margin: 0 auto 2rem;
+        width: 100%;
+        max-width: 122rem;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+        .products-grid {
+            position: static;
+            display: inline;
+            list-style: none;
+            margin: 0;
+            > li {
+                position: absolute;
+                left: 0;
+                top: 0;
+                transition-property: left, opacity;
+                transition-duration: 600ms;
+                transition-timing-function: ease;
+                opacity: 0;
+                margin: 0;
+                padding: 0 1rem;
+            }
+        }
+        .carousel-next,
+        .carousel-prev {
+            background-size: auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            z-index: 2;
+            top: 50%;
+            overflow: hidden;
+            text-indent: 40px;
+        }
+        .carousel-prev {
+            background-image: url("../images/home-explore-prev.png");
+            left: 1.1rem;
+            transform: translate(0, -50%);
+        }
+        .carousel-next {
+            background-image: url("../images/home-explore-next.png");
+            right: 1.1rem;
+            transform: translate(0, -50%);
+        }
+        .carousel-pager {
+            display: none;
+        }
+    }
+}
+@media only screen and (max-width: 979px) {
+    #wq {
+        .wq-products,
+        .box-up-sell {
+            .products-grid {
+                > li {
+                    left: -50%;
+                    width: 50%;
+                    &.carousel-0 {
+                        left: 100%;
+                        opacity: 0;
+                    }
+                    &.carousel-1 {
+                        left: 50%;
+                        opacity: 1;
+                    }
+                    &.carousel-2 {
+                        left: 0;
+                        opacity: 1;
+                    }
+                    &.carousel-3 {
+                        left: -50%;
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 479px) {
+    #wq {
+        .wq-products,
+        .box-up-sell {
+            .products-grid {
+                > li {
+                    left: -100%;
+                    width: 100%;
+                    &.carousel-0 {
+                        left: 100%;
+                        opacity: 0;
+                    }
+                    &.carousel-1 {
+                        left: 0;
+                        opacity: 1;
+                    }
+                    &.carousel-2 {
+                        left: -100%;
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (min-width: 980px) {
+    #wq {
+        .wq-products,
+        .box-up-sell {
+            .products-grid {
+                > li {
+                    left: -33%;
+                    width: 33%;
+                    &.carousel-0 {
+                        left: 100%;
+                        opacity: 0;
+                    }
+                    &.carousel-1 {
+                        left: 66.667%;
+                        opacity: 1;
+                    }
+                    &.carousel-2 {
+                        left: 33.333%;
+                        opacity: 1;
+                    }
+                    &.carousel-3 {
+                        left: 0;
+                        opacity: 1;
+                    }
+                    &.carousel-4 {
+                        left: -33.333%;
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}
