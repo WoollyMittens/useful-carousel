@@ -70,7 +70,8 @@ useful.Carousel.prototype.Slides = function(context) {
             // apply the class name
             slides[a].className = slides[a].className.replace(/ carousel-\d*/g, '') + ' carousel-' + offset;
             // update the corresponding pager pip
-            indicators[a].className = (idx === a) ? 'carousel-active' : 'carousel-passive';
+// TODO: needs to be updated via parent object instead
+            if (indicators[a]) { indicators[a].className = (idx === a) ? 'carousel-active' : 'carousel-passive'; }
         }
     };
 
@@ -91,6 +92,8 @@ useful.Carousel.prototype.Slides = function(context) {
 
     // execute
 
+    this.double();
+    this.double();
     this.double();
     this.modify();
     this.redraw();

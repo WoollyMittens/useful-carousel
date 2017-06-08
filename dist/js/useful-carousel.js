@@ -772,7 +772,8 @@ useful.Carousel.prototype.Slides = function(context) {
             // apply the class name
             slides[a].className = slides[a].className.replace(/ carousel-\d*/g, '') + ' carousel-' + offset;
             // update the corresponding pager pip
-            indicators[a].className = (idx === a) ? 'carousel-active' : 'carousel-passive';
+// TODO: needs to be updated via parent object instead
+            if (indicators[a]) { indicators[a].className = (idx === a) ? 'carousel-active' : 'carousel-passive'; }
         }
     };
 
@@ -793,6 +794,8 @@ useful.Carousel.prototype.Slides = function(context) {
 
     // execute
 
+    this.double();
+    this.double();
     this.double();
     this.modify();
     this.redraw();
@@ -822,11 +825,13 @@ useful.Carousel = useful.Carousel || function() {};
 // extend the constructor
 useful.Carousel.prototype.init = function(model) {
 
-    // set the parser to strict mode
-
     "use strict";
 
-    // establish the default properties
+	// verify input
+
+	if (model.wrapper === null || model.slides.length === 0) return false;
+
+    // model
 
     this.model = {
         'index': 0,
@@ -836,21 +841,19 @@ useful.Carousel.prototype.init = function(model) {
         'duration': 1000
     };
 
-    // merge in the  custom properties
-
     for (name in model) {
         this.model[name] = model[name];
     }
 
-    // add the views
+    // views
 
+    this.slides = new this.Slides(this);
     this.controls = new this.Controls(this);
     this.indicators = new this.Indicators(this);
-    this.slides = new this.Slides(this);
     this.gestures = new this.Gestures(this);
     this.idle = new this.Idle(this);
 
-    // define the public functions
+    // controler
 
     this.redraw = function() {
         // update the slides
@@ -868,8 +871,6 @@ useful.Carousel.prototype.init = function(model) {
         // increment the slider by the given amount
         this.controls.onIncrement(offset);
     };
-
-    // return the completed object
 
     return this;
 
