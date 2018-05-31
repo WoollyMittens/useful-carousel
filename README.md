@@ -1,4 +1,4 @@
-# useful.carousel.js: Responsive Carousel
+# carousel.js: Responsive Carousel
 
 A slideshow and product slider that adapts to various screen sizes.
 
@@ -9,19 +9,19 @@ Try the <a href="http://www.woollymittens.nl/default.php?url=useful-carousel">de
 The stylesheet is best included in the header of the document.
 
 ```html
-<link rel="stylesheet" href="./css/useful-carousel.css"/>
+<link rel="stylesheet" href="./css/carousel.css"/>
 ```
 
 This include can be added to the header or placed inline before the script is invoked.
 
 ```html
-<script src="./js/useful-carousel.js"></script>
+<script src="./js/carousel.js"></script>
 ```
 
 ## How to start the script
 
 ```javascript
-var carousel = new useful.Carousel().init({
+var carousel = new Carousel({
 	'wrapper': document.querySelector('.hero-slideshow'),
 	'slides': document.querySelectorAll('.hero-slideshow figure'),
 	'delay': 6000,
