@@ -55,6 +55,5 @@ var Carousel = function(model) {
 };
 
 // return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Carousel;
-}
+if (typeof define != 'undefined') define(['carousel'], function () { return Carousel });
+if (typeof module != 'undefined') module.exports = Carousel;
