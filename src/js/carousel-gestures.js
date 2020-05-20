@@ -33,11 +33,11 @@ Carousel.prototype.Gestures = function(context) {
 				var dx = this.x1 - this.x0;
 				if (dx > 30) {
 					evt.preventDefault();
-					this.parent.increment(-1);
+					this.parent.increment(1);
 				}
 				if (dx < -30) {
 					evt.preventDefault();
-					this.parent.increment(1);
+					this.parent.increment(-1);
 				}
 				break;
 		}

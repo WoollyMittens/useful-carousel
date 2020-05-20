@@ -9,15 +9,22 @@
 // establish the class
 var Carousel = function(model) {
 
+	function slidesPerWrapper() {
+		var slideWidth = model.slides[0].offsetWidth || 200;
+		var wrapperWidth = model.wrapper.offsetWidth || document.body.offsetWidth;
+		return Math.round(wrapperWidth / slideWidth);
+	};
+
 	// PROPERTIES
 
 	this.model = {
-		'index': 0,
 		'indicators': [],
 		'modify': false,
 		'delay': -1,
-		'duration': 1000
+		'duration': 500
 	};
+  this.model.steps = slidesPerWrapper();
+  this.model.index = this.model.steps + 1;
 
 	for (key in model) {
 		this.model[key] = model[key];
@@ -34,11 +41,19 @@ var Carousel = function(model) {
 	// METHODS
 
 	this.redraw = function() {
-		// update the slides
-		this.slides.redraw();
-		// update the idle timer
-		this.idle.wait();
-	};
+		var index = this.model.index;
+		var wrapper = this.model.wrapper;
+		var slides = this.model.slides;
+		var steps = this.model.steps;
+    // update the dimensions
+    steps = slidesPerWrapper();
+    wrapper.setAttribute('data-carousel', (slides.length > steps) ? 'active' : 'static');
+    wrapper.style.minHeight = (slides[index]) ? slides[index].offsetHeight + 'px' : 'auto';
+    // update the slides
+    this.slides.redraw();
+    // update the idle timer
+    this.idle.wait();
+  };
 
 	this.goto = function(index) {
 		// jump directly to the given index
@@ -51,6 +66,19 @@ var Carousel = function(model) {
 	};
 
 	// EVENTS
+
+	this.onResize = function() {
+    var _this = this;
+    // wait for resizing to end, before redrawing
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(this.redraw.bind(this), 100);
+  };
+
+  window.addEventListener('resize', this.onResize.bind(this));
+  var observer = new MutationObserver(this.onResize.bind(this));
+  observer.observe(this.model.wrapper, { attributes: true, attributeFilter: ['class', 'style'], childList: false, subtree: false });
+
+  this.redraw();
 
 };
 
@@ -74,14 +102,14 @@ Carousel.prototype.Controls = function(context) {
 		var prev = document.createElement('a');
 		prev.setAttribute('class', 'carousel-prev');
 		prev.setAttribute('href', '#');
-		prev.addEventListener('click', this.onIncrement.bind(this, -1));
+		prev.addEventListener('click', this.onIncrement.bind(this, 1));
 		prev.innerHTML = 'Previous';
 		wrapper.appendChild(prev);
 		// build the next button
 		var next = document.createElement('a');
 		next.setAttribute('class', 'carousel-next');
 		next.setAttribute('href', '#');
-		next.addEventListener('click', this.onIncrement.bind(this, 1));
+		next.addEventListener('click', this.onIncrement.bind(this, -1));
 		next.innerHTML = 'Next';
 		wrapper.appendChild(next);
 	};
@@ -90,21 +118,15 @@ Carousel.prototype.Controls = function(context) {
 
 	this.onIncrement = function(direction, evt) {
 		// cancel any click
-		if (evt) {
-			evt.preventDefault();
-		}
+		if (evt) evt.preventDefault();
 		// refuse input if busy
-		if (this.model.busy) {
-			return false;
-		}
+		if (this.model.busy) return false;
+    // update the increment
+    this.model.steps = Math.round(this.model.wrapper.offsetWidth / this.model.slides[0].offsetWidth);
 		// wrap the index
-		this.model.index += direction;
-		this.model.index = (this.model.index < 0)
-			? this.model.slides.length - 1
-			: this.model.index;
-		this.model.index = (this.model.index >= this.model.slides.length)
-			? 0
-			: this.model.index;
+		this.model.index += direction * this.model.steps;
+		this.model.index = (this.model.index < 0) ? this.model.index + this.model.slides.length : this.model.index;
+		this.model.index = (this.model.index >= this.model.slides.length) ? this.model.index - this.model.slides.length : this.model.index;
 		// redraw the slides
 		this.parent.redraw();
 	};
@@ -150,11 +172,11 @@ Carousel.prototype.Gestures = function(context) {
 				var dx = this.x1 - this.x0;
 				if (dx > 30) {
 					evt.preventDefault();
-					this.parent.increment(-1);
+					this.parent.increment(1);
 				}
 				if (dx < -30) {
 					evt.preventDefault();
-					this.parent.increment(1);
+					this.parent.increment(-1);
 				}
 				break;
 		}
@@ -194,9 +216,7 @@ Carousel.prototype.Idle = function(context) {
 		// cancel busy mode
 		this.model.busy = null;
 		// order the next cycle
-		if (this.model.delay > 0) {
-			this.model.automatic = setTimeout(this.perform.bind(this), this.model.delay);
-		}
+		if (this.model.delay > 0) this.model.automatic = setTimeout(this.perform.bind(this), this.model.delay);
 	};
 
 };
@@ -212,9 +232,9 @@ Carousel.prototype.Indicators = function(context) {
 	// methods
 
 	this.addPips = function(nav) {
-		var wrapper = this.model.wrapper,
-			slides = this.model.slides,
-			indicators = this.model.indicators;
+		var wrapper = this.model.wrapper;
+		var slides = this.model.slides;
+		var indicators = this.model.indicators;
 		// build the pager
 		var nav = document.createElement('nav');
 		nav.className = 'carousel-indicators';
@@ -236,13 +256,9 @@ Carousel.prototype.Indicators = function(context) {
 
 	this.onIndex = function(index, evt) {
 		// cancel any click
-		if (evt) {
-			evt.preventDefault();
-		}
+		if (evt) evt.preventDefault();
 		// refuse input if busy
-		if (this.model.busy) {
-			return false;
-		}
+		if (this.model.busy) return false;
 		// apply the index
 		this.model.index = index;
 		// redraw the slides
@@ -258,84 +274,69 @@ Carousel.prototype.Indicators = function(context) {
 // extend the constructor
 Carousel.prototype.Slides = function(context) {
 
-    // properties
+  // properties
 
-    this.parent = context;
-    this.model = context.model;
+  this.parent = context;
+  this.model = context.model;
 
-    // methods
+  // methods
 
-    this.double = function () {
-        var slides = this.model.slides, clone, originals = [], clones = [];
-        // if there are not enough slides
-        if (slides.length < 6) {
-            // double the amount of slides
-            for (var a = 0, b = slides.length; a < b; a += 1) {
-                originals[a] = slides[a];
-                clones[a] = slides[a].cloneNode(true);
-                slides[a].parentNode.appendChild(clones[a]);
-            }
-            // re-index the slides
-            this.model.slides = originals.concat(clones);
-        }
-    };
+  this.double = function() {
+    var slides = this.model.slides;
+    var steps = this.model.steps;
+    var clone;
+    var originals = [];
+    var clones = [];
+    // if there are not enough slides
+    if (slides.length > steps && slides.length < steps * 3) {
+      // double the amount of slides
+      for (var a = 0, b = slides.length; a < b; a += 1) {
+        originals[a] = slides[a];
+        clones[a] = slides[a].cloneNode(true);
+        slides[a].parentNode.appendChild(clones[a]);
+      }
+      // re-index the slides
+      this.model.slides = originals.concat(clones);
+    }
+  };
 
-    this.modify = function () {
-        var img, slides = this.model.slides;
-        // give up if not wanted
-        if (!this.model.modify) { return false; }
-        // for all slides
-        for (var a = 0, b = slides.length; a < b; a += 1) {
-            // transfer the image to the background
-            img = slides[a].querySelector('img');
-            slides[a].style.backgroundImage = "url('" + img.getAttribute('src') + "')";
-            img.parentNode.removeChild(img);
-        }
-    };
 
-    this.redraw = function () {
-        var offset,
-            idx = this.model.index,
-            max = this.model.slides.length,
-            prefix = this.model.prefix,
-            slides = this.model.slides,
-            indicators = this.model.indicators;
-        // adjust the height of the carousel
-        this.onResize(this.model.index);
-        // apply the sequential class names to the slides
-        for (var a = 0, b = slides.length; a < b; a += 1) {
-            // calculate the offset
-            offset = (idx + a) % max;
-            // apply the class name
-            slides[a].className = slides[a].className.replace(/ carousel-\d*/g, '') + ' carousel-' + offset;
-            // update the corresponding pager pip
-// TODO: needs to be updated via parent object instead
-            if (indicators[a]) { indicators[a].className = (idx === a) ? 'carousel-active' : 'carousel-passive'; }
-        }
-    };
+  this.modify = function () {
+    var img, slides = this.model.slides;
+    // give up if not wanted
+    if (!this.model.modify) return false;
+    // for all slides
+    for (var a = 0, b = slides.length; a < b; a += 1) {
+      // transfer the image to the background
+      img = slides[a].querySelector('img');
+      slides[a].style.backgroundImage = "url('" + img.getAttribute('src') + "')";
+      img.parentNode.removeChild(img);
+    }
+  };
 
-    this.resize = function () {
-        // what to do when the browser is resized
-        window.addEventListener('resize', this.onResize.bind(this));
-    };
-
-    // events
-
-    this.onResize = function () {
-        var wrapper = this.model.wrapper,
-            slides = this.model.slides,
-            index = this.model.index;
-        // make the container as tall as the active slide
-        wrapper.style.height = (slides[index]) ? slides[index].offsetHeight + 'px' : 'auto';
-    };
-
-    // execute
-
+  this.redraw = function() {
     this.double();
-    this.double();
-    this.double();
-    this.modify();
-    this.redraw();
-    this.resize();
+    var offset;
+    var idx = this.model.index;
+    var max = this.model.slides.length;
+    var prefix = this.model.prefix;
+    var wrapper = this.model.wrapper;
+    var slides = this.model.slides;
+    var indicators = this.model.indicators;
+    // apply the sequential class names to the slides
+    for (var a = 0, b = slides.length; a < b; a += 1) {
+      // calculate the offset
+      offset = (idx + a) % max;
+      // apply the class name
+      slides[a].className = slides[a].className.replace(/ carousel-\d*/g, '') + ' carousel-' + offset;
+      // update the corresponding pager pip
+      if (indicators[a]) indicators[a].className = (idx === a) ? 'carousel-active' : 'carousel-passive';
+    }
+  };
+
+  // execute
+
+  this.modify();
+  this.double();
 
 };

@@ -9,9 +9,9 @@ Carousel.prototype.Indicators = function(context) {
 	// methods
 
 	this.addPips = function(nav) {
-		var wrapper = this.model.wrapper,
-			slides = this.model.slides,
-			indicators = this.model.indicators;
+		var wrapper = this.model.wrapper;
+		var slides = this.model.slides;
+		var indicators = this.model.indicators;
 		// build the pager
 		var nav = document.createElement('nav');
 		nav.className = 'carousel-indicators';
@@ -33,13 +33,9 @@ Carousel.prototype.Indicators = function(context) {
 
 	this.onIndex = function(index, evt) {
 		// cancel any click
-		if (evt) {
-			evt.preventDefault();
-		}
+		if (evt) evt.preventDefault();
 		// refuse input if busy
-		if (this.model.busy) {
-			return false;
-		}
+		if (this.model.busy) return false;
 		// apply the index
 		this.model.index = index;
 		// redraw the slides

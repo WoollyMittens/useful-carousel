@@ -9,15 +9,22 @@
 // establish the class
 var Carousel = function(model) {
 
+	function slidesPerWrapper() {
+		var slideWidth = model.slides[0].offsetWidth || 200;
+		var wrapperWidth = model.wrapper.offsetWidth || document.body.offsetWidth;
+		return Math.round(wrapperWidth / slideWidth);
+	};
+
 	// PROPERTIES
 
 	this.model = {
-		'index': 0,
 		'indicators': [],
 		'modify': false,
 		'delay': -1,
-		'duration': 1000
+		'duration': 500
 	};
+  this.model.steps = slidesPerWrapper();
+  this.model.index = this.model.steps + 1;
 
 	for (key in model) {
 		this.model[key] = model[key];
@@ -34,11 +41,19 @@ var Carousel = function(model) {
 	// METHODS
 
 	this.redraw = function() {
-		// update the slides
-		this.slides.redraw();
-		// update the idle timer
-		this.idle.wait();
-	};
+		var index = this.model.index;
+		var wrapper = this.model.wrapper;
+		var slides = this.model.slides;
+		var steps = this.model.steps;
+    // update the dimensions
+    steps = slidesPerWrapper();
+    wrapper.setAttribute('data-carousel', (slides.length > steps) ? 'active' : 'static');
+    wrapper.style.minHeight = (slides[index]) ? slides[index].offsetHeight + 'px' : 'auto';
+    // update the slides
+    this.slides.redraw();
+    // update the idle timer
+    this.idle.wait();
+  };
 
 	this.goto = function(index) {
 		// jump directly to the given index
@@ -51,6 +66,19 @@ var Carousel = function(model) {
 	};
 
 	// EVENTS
+
+	this.onResize = function() {
+    var _this = this;
+    // wait for resizing to end, before redrawing
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(this.redraw.bind(this), 100);
+  };
+
+  window.addEventListener('resize', this.onResize.bind(this));
+  var observer = new MutationObserver(this.onResize.bind(this));
+  observer.observe(this.model.wrapper, { attributes: true, attributeFilter: ['class', 'style'], childList: false, subtree: false });
+
+  this.redraw();
 
 };
 

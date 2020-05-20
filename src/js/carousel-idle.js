@@ -26,9 +26,7 @@ Carousel.prototype.Idle = function(context) {
 		// cancel busy mode
 		this.model.busy = null;
 		// order the next cycle
-		if (this.model.delay > 0) {
-			this.model.automatic = setTimeout(this.perform.bind(this), this.model.delay);
-		}
+		if (this.model.delay > 0) this.model.automatic = setTimeout(this.perform.bind(this), this.model.delay);
 	};
 
 };
