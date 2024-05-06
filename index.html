@@ -1,10 +1,138 @@
 <!DOCTYPE html>
 <html>
-	<head>
-    <title>Redirect to demo</title>
-		<script>document.location.replace('./dist/');</script>
-	</head>
-	<body>
-		<a href="./dist/">Start</a>
-	</body>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>carousel.js: Responsive Carousel</title>
+	<style>
+		html { font-family:Sans-Serif; font-size:75%; height:100%; }
+		body { _height:100%; line-height:180%; margin:0; min-height:100%; padding:1%; }
+		.example { max-width:960px; margin:0 auto; padding:0; clear:both; }
+		.example > article, .example > aside { width:98%; padding:2%; }
+		.example-left > article, .example-left > aside { width:48%; padding:1%; float:left; }
+		.example-right > article, .example-right > aside { width:48%; padding:1%; float:right; }
+	</style>
+</head>
+
+<body>
+	<section class="example example-full">
+		<article>
+			<h2>Responsive Carousel</h2>
+			<p>A slideshow and product slider that adapts to various screen sizes.</p>
+			<p><a class="button downloadButton" href="http://github.com/WoollyMittens/useful-carousel" target="_blank">Download (GitHub)</a></p>
+		</article>
+		<aside>
+
+			<!-- Cut below this -->
+			<style>@import url("./css/carousel.css");</style>
+			<script src="./js/carousel.js"></script>
+
+			<h3>Hero Slideshow</h3>
+			<div class="hero-slideshow">
+				<figure>
+					<img alt="" src="./img/photo_0.jpg" />
+					<figcaption>North Era, Royal National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_1.jpg" />
+					<figcaption>Victoria Falls, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_2.jpg" />
+					<figcaption>Grose Valley, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_3.jpg" />
+					<figcaption>Bridal Veil Falls, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_4.jpg" />
+					<figcaption>Carpet Python, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_5.jpg" />
+					<figcaption>Twelve Apostles, Great North Road</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_6.jpg" />
+					<figcaption>Rainbow Lorikeet, Wildlife Sydney</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_7.jpg" />
+					<figcaption>Hawkesbury River, Kuring-gai Chase National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_8.jpg" />
+					<figcaption>Kookaburra, Balmoral Beach</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_9.jpg" />
+					<figcaption>Calna Creek, Berowra Valley National Park</figcaption>
+				</figure>
+			</div>
+			<script>
+				var heroSlideshow = new Carousel({
+					'wrapper': document.querySelector('.hero-slideshow'),
+					'slides': document.querySelectorAll('.hero-slideshow figure'),
+					'delay': 6000,
+					'modify': true
+				});
+			</script>
+
+			<h3>Products Conveyor</h3>
+			<div class="products-conveyor">
+				<figure>
+					<img alt="" src="./img/photo_0.jpg" />
+					<figcaption>North Era, Royal National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_1.jpg" />
+					<figcaption>Victoria Falls, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_2.jpg" />
+					<figcaption>Grose Valley, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_3.jpg" />
+					<figcaption>Bridal Veil Falls, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_4.jpg" />
+					<figcaption>Carpet Python, Blue Mountains National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_5.jpg" />
+					<figcaption>Twelve Apostles, Great North Road</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_6.jpg" />
+					<figcaption>Rainbow Lorikeet, Wildlife Sydney</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_7.jpg" />
+					<figcaption>Hawkesbury River, Kuring-gai Chase National Park</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_8.jpg" />
+					<figcaption>Kookaburra, Balmoral Beach</figcaption>
+				</figure>
+				<figure>
+					<img alt="" src="./img/photo_9.jpg" />
+					<figcaption>Calna Creek, Kuring-gai Chase National Park</figcaption>
+				</figure>
+			</div>
+			<script>
+				var productsConveyor = new Carousel({
+					'wrapper': document.querySelector('.products-conveyor'),
+					'slides': document.querySelectorAll('.products-conveyor figure')
+				});
+			</script>
+			<!-- Cut above this -->
+
+		</aside>
+	</section>
+</body>
+
 </html>
